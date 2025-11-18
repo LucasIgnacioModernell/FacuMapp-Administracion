@@ -1,8 +1,9 @@
 import { Router } from "express"
-import { EspacioController, CategoriaController } from "../controllers/espacio"
-import { upload } from "../middlewares/upload.js";
+import { EspacioController, CategoriaController } from "../controllers/espacio.js"
+import { upload } from "../middleware/upload.js";
 
 export const espacioRouter = Router()
+export const categoriaRouter = Router()
 
 // CRUD espacios
 espacioRouter.get('/espacio', EspacioController.getAll)

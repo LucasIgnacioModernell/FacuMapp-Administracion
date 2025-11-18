@@ -5,7 +5,7 @@
   "description": "Backend para aplicación de mapa interactivo",
   "main": "app.js",
   "scripts": {
-    "dev": "nodemon app.js",
+    "dev": "nodemon --legacy-watch app.js",
     "start": "node app.js"
   },
   "keywords": ["express", "mysql", "crud", "mapa"],

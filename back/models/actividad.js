@@ -1,4 +1,4 @@
-import { query } from "../config/database";
+import { query } from "../config/database.js";
 export class ActividadModel {
 
   static getAll = async () => {  

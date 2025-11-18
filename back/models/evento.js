@@ -1,4 +1,4 @@
-import { query } from "../config/database";
+import { query } from "../config/database.js";
 export class EventoModel {
   static getAll = async () => {
     const { rows: eventos } = await query("SELECT * FROM evento");

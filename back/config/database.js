@@ -35,7 +35,7 @@ const getConnection = async () => {
 };
 
 // Función para ejecutar queries
-const query = async (sql, params = []) => {
+export const query = async (sql, params = []) => {
     try {
         const [rows] = await pool.execute(sql, params);
         return rows;
@@ -45,10 +45,6 @@ const query = async (sql, params = []) => {
     }
 };
 
+export { pool, getConnection };
 
 
-export default {
-    pool,
-    getConnection,
-    query
-};

@@ -1,5 +1,5 @@
 import { Router } from "express"
-import { ActividadController } from "../controllers/actividad"
+import { ActividadController } from "../controllers/actividad.js"
 
 export const actividadRouter = Router()
 

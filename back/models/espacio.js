@@ -1,4 +1,4 @@
-import { query } from "../config/database";
+import { query } from "../config/database.js";
 export class EspacioModel {
   static getAll = async () => {
     const { rows: espacios } = await query("SELECT * FROM espacio");

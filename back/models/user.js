@@ -1,4 +1,4 @@
-import { query } from "../config/database";
+import { query } from "../config/database.js";
 import bcrypt from "bcrypt"
 export class  UserModel{
 static create = async (input) =>{
