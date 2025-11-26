@@ -19,17 +19,23 @@ services:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - mapa_network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
+      timeout: 20s
+      retries: 10
 
-  backend:
-    build: ./back
+  backend: 
+    platform: linux/amd64
+    build:
+      context: ./back
     container_name: mapa_backend
     restart: unless-stopped
     env_file:
       - .env
     environment:
       NODE_ENV: ${NODE_ENV}
-      DB_HOST: ${DB_HOST}
-      DB_PORT: ${DB_PORT}
+      DB_HOST: mysql
+      DB_PORT: 3306
       DB_NAME: ${DB_NAME}
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASSWORD}
@@ -37,23 +43,30 @@ services:
     ports:
       - "${APP_PORT}:3000"
     volumes:
+      - ./back:/app
+      - /app/node_modules
       - ./uploads:/app/uploads
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy
     networks:
       - mapa_network
 
-  frontend:
-    build: ./front/front-administracion       
+  frontend: 
+    build:
+      context: ./front/front-administracion
     container_name: mapa_frontend
     restart: unless-stopped
     ports:
       - "5173:5173"
     environment:
       - HOST=0.0.0.0
+      - CHOKIDAR_USEPOLLING=true
     volumes:
-      - ./front:/app        
-      - /app/node_modules    
+      - ./front/front-administracion:/app
+      - /app/node_modules
+    depends_on:
+      - backend
     networks:
       - mapa_network
 
