@@ -3,7 +3,6 @@ import { ActividadModel } from "../models/actividad.js"
 
 export class ActividadController {
     static getAll = async (req, res) => {
-        
         try{
         const actividades = await ActividadModel.getAll()
         res.json(actividades)
@@ -14,7 +13,6 @@ export class ActividadController {
     }
     
     static getById = async (req, res) => {
-       
         try{
         const { id } = req.params
         const actividad = await ActividadModel.getById(id)

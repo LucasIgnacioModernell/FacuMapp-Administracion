@@ -13,7 +13,6 @@ export function getUserData(req, res, next) {
         const data = jwt.verify(token, process.env.SECRET)
         req.session.user = data
     }catch(err){
-        console.error('Error al verificar token:', err);
         req.session.user = null
     }
     next()
