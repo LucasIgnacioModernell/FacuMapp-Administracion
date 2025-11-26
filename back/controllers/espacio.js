@@ -5,8 +5,7 @@ export class EspacioController {
 
         try{
         const espacios = await EspacioModel.getAll()
-        res.json(espacios)
-        res.status(200).end()
+        res.status(200).json(espacios)
         } catch (error) {
             console.error(error);
             res.status(400).json({ error: error.message });
@@ -19,7 +18,6 @@ export class EspacioController {
         const { id } = req.params
         const espacios = await EspacioModel.getById(id)
         res.json(espacios)
-        res.status(200).end()
         } catch (error) {
             console.error(error);
             res.status(400).json({ error: error.message });
@@ -36,7 +34,7 @@ export class EspacioController {
                 validated_input.imagen = `/uploads/${req.file.filename}`;
              }
             await EspacioModel.postEspacio(validated_input)
-            res.status(201).json({"ok": true}).end(); 
+            res.status(201).json({"ok": true}); 
         } catch (error) {
             console.error(error);
             res.status(400).json({ error: error.message });
@@ -50,7 +48,7 @@ export class EspacioController {
         try{
         const { id } = req.params
         await EspacioModel.deleteById(id)
-        res.status(200).json({"ok": true}).end()
+        res.status(200).json({"ok": true})
         } catch (error) {
             console.error(error);
             res.status(400).json({ error: error.message });
@@ -76,7 +74,7 @@ export class EspacioController {
             validated_input.imagen = `/uploads/${req.file.filename}`;
         }
         await EspacioModel.updateEspacio(id, validated_input)
-        res.status(200).json({"ok": true}).end()
+        res.status(200).json({"ok": true})
         } catch (error) {
             console.error(error);
             res.status(400).json({ error: error.message });
@@ -91,7 +89,7 @@ export class EspacioController {
             const { id } = req.params
             const validated_input = CategoriasSchema.parse(req.body); 
             await EspacioModel.addCategorias(id, validated_input)
-            res.status(201).json({"ok": true}).end(); 
+            res.status(201).json({"ok": true}); 
         } catch (error) {
             console.error(error);
             res.status(400).json({ error: error.message });
@@ -106,7 +104,7 @@ export class EspacioController {
             const { id } = req.params
             const validated_input = CategoriasSchema.parse(req.body); 
             await EspacioModel.removeCategoria(id, validated_input)
-            res.status(201).json({"ok": true}).end(); 
+            res.status(201).json({"ok": true}); 
         } catch (error) {
             console.error(error);
             res.status(400).json({ error: error.message });
@@ -119,7 +117,6 @@ export class CategoriaController {
         try{
         const categorias = await CategoriaModel.getAll()
         res.json(categorias)
-        res.status(200).end()
         } catch (error) {
             console.error(error);
             res.status(400).json({ error: error.message });
@@ -132,7 +129,6 @@ export class CategoriaController {
         const { id } = req.params
         const categoria = await CategoriaModel.getById(id)
         res.json(categoria)
-        res.status(200).end()
         } catch (error) {
             console.error(error);
             res.status(400).json({ error: error.message });
@@ -146,7 +142,7 @@ export class CategoriaController {
         try {
             const validated_input = CategoriaSchema.parse(req.body);
             await CategoriaModel.postCategoria(validated_input)
-            res.status(201).json({"ok": true}).end(); 
+            res.status(201).json({"ok": true}); 
         } catch (error) {
             console.error(error);
             res.status(400).json({ error: error.message });
@@ -160,7 +156,7 @@ export class CategoriaController {
         try{
         const { id } = req.params
         await CategoriaModel.deleteById(id)
-        res.status(200).json({"ok": true}).end()
+        res.status(200).json({"ok": true})
         } catch (error) {
             console.error(error);
             res.status(400).json({ error: error.message });
@@ -175,7 +171,7 @@ export class CategoriaController {
         const { id } = req.params
         const validated_input = CategoriaSchema.parse(req.body);
         await CategoriaModel.updateCategoria(id, validated_input)
-        res.status(200).json({"ok": true}).end()
+        res.status(200).json({"ok": true})
         } catch (error) {
             console.error(error);
             res.status(400).json({ error: error.message });

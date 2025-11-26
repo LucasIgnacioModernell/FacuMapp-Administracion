@@ -22,11 +22,21 @@ console.log('🚀 Servidor iniciando...');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-const corsOptions = {
-    origin: 'http://localhost:5173',
-    credentials: true,
-    sameSite: "None"
-};
+let corsOptions;
+
+if (process.env.NODE_ENV === 'development') {
+    // Relaxed CORS for development to allow any origin
+    corsOptions = {
+        origin: true, // Reflects the request origin
+        credentials: true,
+    };
+} else {
+    // Stricter CORS for production
+    corsOptions = {
+        origin: ['http://localhost:5173', 'https://5173-firebase-facumapp-admingit-1764111526599.cluster-udxxdyopu5c7cwhhtg6mmadhvs.cloudworkstations.dev'],
+        credentials: true,
+    };
+}
 
 // Middlewares globales
 app.disable('x-powered-by');
@@ -36,17 +46,8 @@ app.use(express.json());
 app.use(cookieParser());
 
 // Middleware user 
-app.use((req, res, next) => {
-    try {
-        getUserData(req, res, next);
-    } catch {
-        req.user = null;
-        next();
-    }
-});
+app.use(getUserData);
 
-
-// ⭐⭐⭐ ENDPOINT DE PRUEBA ⭐⭐⭐
 app.get("/test", (req, res) => {
     res.status(200).json({
         ok: true,

@@ -7,7 +7,6 @@ export class ActividadController {
         try{
         const actividades = await ActividadModel.getAll()
         res.json(actividades)
-        res.status(200).end()
         } catch (error) {
             console.error(error);
             res.status(400).json({ error: error.message });
@@ -20,7 +19,6 @@ export class ActividadController {
         const { id } = req.params
         const actividad = await ActividadModel.getById(id)
         res.json(actividad)
-        res.status(200).end()
         } catch (error) {
             console.error(error);
             res.status(400).json({ error: error.message });
@@ -34,7 +32,7 @@ export class ActividadController {
         try {
             const validated_input = actividadSchema.parse(req.body);
             await ActividadModel.postActividad(validated_input)
-            res.status(201).json({"ok": true}).end(); 
+            res.status(201).json({"ok": true}); 
         } catch (error) {
             console.error(error);
             res.status(400).json({ error: error.message });
@@ -48,7 +46,7 @@ export class ActividadController {
         try{
         const { id } = req.params
         await ActividadModel.deleteById(id)
-        res.status(200).json({"ok": true}).end()
+        res.status(200).json({"ok": true})
         } catch (error) {
             console.error(error);
             res.status(400).json({ error: error.message });
@@ -63,7 +61,7 @@ export class ActividadController {
         const { id } = req.params
         const validated_input = actividadSchema.parse(req.body);
         await ActividadModel.updateActividad(id, validated_input)
-        res.status(200).json({"ok": true}).end()
+        res.status(200).json({"ok": true})
         } catch (error) {
             console.error(error);
             res.status(400).json({ error: error.message });

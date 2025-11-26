@@ -6,7 +6,6 @@ export class EventoController {
         try{
         const eventos = await EventoModel.getAll()
         res.json(eventos)
-        res.status(200).end()
         } catch (error) {
             console.error(error);
             res.status(400).json({ error: error.message });
@@ -20,7 +19,6 @@ export class EventoController {
         const { id } = req.params
         const evento = await EventoModel.getById(id)
         res.json(evento)
-        res.status(200).end()
         } catch (error) {
             console.error(error);
             res.status(400).json({ error: error.message });
@@ -34,7 +32,7 @@ export class EventoController {
         try {
             const validated_input = EventoSchema.parse(req.body);
             await EventoModel.postEvento(validated_input)
-            res.status(201).json({"ok": true}).end(); 
+            res.status(201).json({"ok": true}); 
         } catch (error) {
             console.error(error);
             res.status(400).json({ error: error.message });
@@ -48,7 +46,7 @@ export class EventoController {
         try{
         const { id } = req.params
         await EventoModel.deleteById(id)
-        res.status(200).json({"ok": true}).end()
+        res.status(200).json({"ok": true})
         } catch (error) {
             console.error(error);
             res.status(400).json({ error: error.message });
@@ -63,7 +61,7 @@ export class EventoController {
         const { id } = req.params
         const validated_input = EventoSchema.parse(req.body);
         await EventoModel.updateEvento(id, validated_input)
-        res.status(200).json({"ok": true}).end()
+        res.status(200).json({"ok": true})
         } catch (error) {
             console.error(error);
             res.status(400).json({ error: error.message });

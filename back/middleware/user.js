@@ -17,4 +17,4 @@ export function getUserData(req, res, next) {
         req.session.user = null
     }
     next()
-}
+} 
