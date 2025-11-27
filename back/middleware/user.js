@@ -1,4 +1,3 @@
-//middleware que intercepta la cookie de sesion de usuario
 import dotenv from 'dotenv'
 import jwt from 'jsonwebtoken'
 
