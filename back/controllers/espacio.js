@@ -26,7 +26,7 @@ export class EspacioController {
     static postEspacio = async (req, res) => {
         //Validamos la session
         const { user } = req.session
-        if(!user || !user.administrador) return res.status(403).send('Access not authorized')
+        if(!user || !user.admin) return res.status(403).send('Access not authorized')
 
         try {
             const validated_input = EspacioSchema.parse(req.body);
@@ -43,7 +43,7 @@ export class EspacioController {
     static deleteEspacio = async (req, res) => {
         //Validamos la session
         const { user } = req.session
-        if(!user || !user.administrador) return res.status(403).send('Access not authorized')
+        if(!user || !user.admin) return res.status(403).send('Access not authorized')
 
         try{
         const { id } = req.params
@@ -57,7 +57,7 @@ export class EspacioController {
     static updateEspacio = async (req, res) => {
         //Validamos la session
         const { user } = req.session
-        if(!user || !user.administrador) return res.status(403).send('Access not authorized')
+        if(!user || !user.admin) return res.status(403).send('Access not authorized')
 
         try{
         const { id } = req.params
@@ -83,7 +83,7 @@ export class EspacioController {
     static addCategoria = async (req, res) => {
         //Validamos la session
         const { user } = req.session
-        if(!user || !user.administrador) return res.status(403).send('Access not authorized')
+        if(!user || !user.admin) return res.status(403).send('Access not authorized')
 
         try {
             const { id } = req.params
@@ -98,7 +98,7 @@ export class EspacioController {
     static removeCategoria = async (req, res) => {
         //Validamos la session
         const { user } = req.session
-        if(!user || !user.administrador) return res.status(403).send('Access not authorized')
+        if(!user || !user.admin) return res.status(403).send('Access not authorized')
 
         try {
             const { id } = req.params
@@ -137,7 +137,7 @@ export class CategoriaController {
     static postCategoria = async (req, res) => {
         //Validamos la session
         const { user } = req.session
-        if(!user || !user.administrador) return res.status(403).send('Access not authorized')
+        if(!user || !user.admin) return res.status(403).send('Access not authorized')
 
         try {
             const validated_input = CategoriaSchema.parse(req.body);
@@ -151,7 +151,7 @@ export class CategoriaController {
     static deleteCategoria = async (req, res) => {
         //Validamos la session
         const { user } = req.session
-        if(!user || !user.administrador) return res.status(403).send('Access not authorized')
+        if(!user || !user.admin) return res.status(403).send('Access not authorized')
 
         try{
         const { id } = req.params
@@ -165,7 +165,7 @@ export class CategoriaController {
     static updateCategoria = async (req, res) => {
         //Validamos la session
         const { user } = req.session
-        if(!user || !user.administrador) return res.status(403).send('Access not authorized')
+        if(!user || !user.admin) return res.status(403).send('Access not authorized')
             
         try{
         const { id } = req.params

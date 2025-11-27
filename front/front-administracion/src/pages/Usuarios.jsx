@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function Usuarios() {
   const [usuarios, setUsuarios] = useState([]);
@@ -38,7 +39,12 @@ export default function Usuarios() {
     <div className="container-fluid px-4 mt-5">
       
      
-      <h1 className="mb-4 display-6 fw-bold">Gestión de Usuarios</h1>
+      <div className="d-flex justify-content-between align-items-center mb-4">
+        <h1 className="display-6 fw-bold">Gestión de Usuarios</h1>
+        <Link to="/usuarios/add" className="btn btn-primary">
+          Agregar Usuario
+        </Link>
+      </div>
 
     
       <div className="card shadow-sm rounded-4 overflow-hidden border-0">

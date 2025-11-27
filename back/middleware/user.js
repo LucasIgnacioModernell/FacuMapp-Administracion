@@ -7,7 +7,10 @@ dotenv.config()
 export function getUserData(req, res, next) {
     const token = req.cookies.access_token
     console.log("token recibido:", token)
-    req.session = {user: null}
+
+    if (!req.session) {
+        req.session = {}
+    }
 
     try{
         const data = jwt.verify(token, process.env.SECRET)
@@ -16,4 +19,4 @@ export function getUserData(req, res, next) {
         req.session.user = null
     }
     next()
-} 
+}

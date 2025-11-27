@@ -40,6 +40,7 @@ export default function Espacios() {
       const response = await fetch("http://localhost:3000/espacio", {
         method: "POST",
         body: formData,
+        credentials: 'include',
       });
 
       if (!response.ok) {

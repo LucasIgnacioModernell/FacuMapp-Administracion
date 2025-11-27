@@ -4,6 +4,7 @@ import Espacios from "./pages/Espacios/Espacios.jsx";
 import Eventos from "./pages/Eventos/Eventos.jsx";
 import EventoDetalle from "./pages/Eventos/EventoDetalle.jsx";
 import Usuarios from "./pages/Usuarios.jsx";
+import AddUser from "./pages/AddUser.jsx";
 import Login from "./pages/Login.jsx";
 import "./App.scss";
 
@@ -35,6 +36,7 @@ const AppContent = () => {
             <Route path="/eventos" element={<Eventos />} />
             <Route path="/eventos/:id" element={<EventoDetalle />} />
             <Route path="/usuarios" element={<Usuarios />} />
+            <Route path="/usuarios/add" element={<AddUser />} />
             <Route path="/login" element={<Login />} />
           </Routes>
         </div>
