@@ -1,24 +1,24 @@
 import { query } from "../config/database.js";
 export class EspacioModel {
   static getAll = async () => {
-    const espacios  = await query("SELECT * FROM espacio");
+    const espacios = await query("SELECT * FROM espacio");
     return espacios;
   };
   static getById = async (id) => {
-    const espacio  = await query(
+    const espacio = await query(
       "SELECT * FROM espacio WHERE id = ?",
       [id]
     );
     return espacio[0];
   };
   static postEspacio = async (input) => {
-    const { nombre, descripcion, imagen } = await input;
+    const { nombre, descripcion, imagen, capacidad } = await input;
 
     await query(
       `INSERT INTO espacio (nombre,
-    descripcion,imagen)
-         VALUES (?, ?, ?);`,
-      [nombre, descripcion, imagen]
+    descripcion, imagen, capacidad)
+         VALUES (?, ?, ?, ?);`,
+      [nombre, descripcion, imagen, capacidad]
     );
     return true;
   };
@@ -40,29 +40,30 @@ export class EspacioModel {
       `UPDATE espacio
      SET nombre = ?,
          descripcion = ?,
-         imagen=?
+         imagen=?,
+         capacidad=?
      WHERE id = ?;`,
-      [newEspacio.nombre, newEspacio.descripcion, newEspacio.imagen, id]
+      [newEspacio.nombre, newEspacio.descripcion, newEspacio.imagen, newEspacio.capacidad, id]
     );
   };
- static addCategorias = async (id, input) => {
-  const { categoria } = input
-  
+  static addCategorias = async (id, input) => {
+    const { categoria } = input
+
     await query(
       `INSERT INTO categoriaxespacio (id_categoria, id_espacio)
        VALUES (?, ?);`,
       [categoria.id, id]
     )
-};
-static removeCategoria = async (id, input) => {
-  const { categoria } = input
-  
+  };
+  static removeCategoria = async (id, input) => {
+    const { categoria } = input
+
     await query(
       `DELETE FROM categoriaxespacio 
        WHERE id_categoria = ? AND id_espacio = ?;`,
       [categoria.id, id]
     )
-}
+  }
 }
 
 export class CategoriaModel {
