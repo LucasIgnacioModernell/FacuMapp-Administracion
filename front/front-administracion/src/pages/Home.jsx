@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { API_URL } from "../config";
 
 export default function Home() {
   const [stats, setStats] = useState({ eventos: 0, espacios: 0, usuarios: 0 });
@@ -10,17 +11,17 @@ export default function Home() {
     const fetchStats = async () => {
       try {
         const [eventosRes, espaciosRes] = await Promise.all([
-          fetch('http://localhost:3000/evento'),
-          fetch('http://localhost:3000/espacio')
+          fetch(`${API_URL}/evento`),
+          fetch(`${API_URL}/espacio`)
         ]);
 
-        if (!eventosRes|| !espaciosRes) {
+        if (!eventosRes || !espaciosRes) {
           throw new Error('Error al obtener las estadísticas');
         }
 
         const eventosData = await eventosRes.json();
         const espaciosData = await espaciosRes.json();
-       
+
 
         setStats({
           eventos: eventosData.length,
@@ -67,7 +68,7 @@ export default function Home() {
               </div>
             </div>
           </div>
-        
+
         </div>
       )}
     </div>

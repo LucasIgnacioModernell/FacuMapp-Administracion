@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { API_URL } from "../../config";
 
 export default function EditActividad() {
   const { id: eventoId, actividadId } = useParams();
@@ -16,7 +17,7 @@ export default function EditActividad() {
     const fetchActividad = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3000/actividad/${actividadId}`
+          `${API_URL}/actividad/${actividadId}`
         );
         if (!response.ok) {
           throw new Error("Error al obtener la actividad");
@@ -42,7 +43,7 @@ export default function EditActividad() {
 
     try {
       const response = await fetch(
-        `http://localhost:3000/actividad/${actividadId}`,
+        `${API_URL}/actividad/${actividadId}`,
         {
           method: "PUT",
           headers: {

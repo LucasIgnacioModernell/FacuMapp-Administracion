@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { API_URL } from "../../config";
 
 export default function AddEvento() {
   const [nombre, setNombre] = useState("");
@@ -13,7 +14,7 @@ export default function AddEvento() {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:3000/evento", {
+      const response = await fetch(`${API_URL}/evento`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

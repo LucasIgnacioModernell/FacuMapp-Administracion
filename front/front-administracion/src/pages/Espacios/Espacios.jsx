@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { API_URL } from "../../config";
 
 export default function Espacios() {
   const [espacios, setEspacios] = useState([]);
@@ -8,7 +9,7 @@ export default function Espacios() {
 
   const fetchEspacios = async () => {
     try {
-      const response = await fetch("http://localhost:3000/espacio");
+      const response = await fetch(`${API_URL}/espacio`);
       if (!response.ok) {
         throw new Error("Error al obtener los espacios");
       }
@@ -28,7 +29,7 @@ export default function Espacios() {
   const handleDelete = async (id) => {
     if (window.confirm("¿Estás seguro de que quieres eliminar este espacio?")) {
       try {
-        const response = await fetch(`http://localhost:3000/espacio/${id}`, {
+        const response = await fetch(`${API_URL}/espacio/${id}`, {
           method: "DELETE",
           credentials: "include",
         });
@@ -39,7 +40,8 @@ export default function Espacios() {
       } catch (error) {
         console.error(error);
       }
-    };}
+    };
+  }
 
 
   if (loading) {
@@ -64,7 +66,7 @@ export default function Espacios() {
             <div className="card">
               {esp.imagen ? (
                 <img
-                  src={`http://localhost:3000/uploads/${esp.imagen}`}
+                  src={`${API_URL}/uploads/${esp.imagen}`}
                   className="card-img-top"
                   alt={esp.nombre}
                   style={{ height: "200px", objectFit: "cover" }}

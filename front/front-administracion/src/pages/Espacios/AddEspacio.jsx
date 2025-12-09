@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { API_URL } from "../../config";
 
 export default function AddEspacio() {
   const [nombre, setNombre] = useState("");
@@ -21,7 +22,7 @@ export default function AddEspacio() {
     }
 
     try {
-      const response = await fetch("http://localhost:3000/espacio", {
+      const response = await fetch(`${API_URL}/espacio`, {
         method: "POST",
         body: formData,
         credentials: "include",

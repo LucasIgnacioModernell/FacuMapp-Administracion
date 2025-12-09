@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { API_URL } from "../../config";
 
 export default function EditEspacio() {
   const { id } = useParams();
@@ -15,7 +16,7 @@ export default function EditEspacio() {
   useEffect(() => {
     const fetchEspacio = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/espacio/${id}`);
+        const response = await fetch(`${API_URL}/espacio/${id}`);
         if (!response.ok) {
           throw new Error("Error al obtener el espacio");
         }
@@ -46,7 +47,7 @@ export default function EditEspacio() {
     }
 
     try {
-      const response = await fetch(`http://localhost:3000/espacio/${id}`, {
+      const response = await fetch(`${API_URL}/espacio/${id}`, {
         method: "PUT",
         body: formData,
         credentials: "include",
@@ -120,7 +121,7 @@ export default function EditEspacio() {
           </label>
           {currentImagen && (
             <img
-              src={`http://localhost:3000/uploads/${currentImagen}`}
+              src={`${API_URL}/uploads/${currentImagen}`}
               alt="Imagen actual"
               className="img-thumbnail mb-2"
               style={{ maxHeight: "150px" }}

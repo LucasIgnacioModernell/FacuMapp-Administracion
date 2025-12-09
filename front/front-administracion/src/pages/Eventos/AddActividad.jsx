@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { API_URL } from "../../config";
 
 export default function AddActividad() {
   const { id } = useParams();
@@ -15,7 +16,7 @@ export default function AddActividad() {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:3000/actividad", {
+      const response = await fetch(`${API_URL}/actividad`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

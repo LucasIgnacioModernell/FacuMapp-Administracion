@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { API_URL } from "../config";
 
 export default function Usuarios() {
   const [usuarios, setUsuarios] = useState([]);
@@ -11,7 +12,7 @@ export default function Usuarios() {
       return;
     }
     try {
-      const response = await fetch(`http://localhost:3000/deleteuser/${id}`, {
+      const response = await fetch(`${API_URL}/deleteuser/${id}`, {
         method: "DELETE",
         credentials: "include",
       });
@@ -26,7 +27,7 @@ export default function Usuarios() {
   useEffect(() => {
     const fetchUsuarios = async () => {
       try {
-        const response = await fetch("http://localhost:3000/getuser");
+        const response = await fetch(`${API_URL}/getuser`);
         if (!response.ok) {
           throw new Error("Error al obtener los usuarios");
         }
@@ -84,11 +85,10 @@ export default function Usuarios() {
                     <td className="p-4">{u.nombre}</td>
                     <td className="p-4 text-center">
                       <span
-                        className={`badge fs-6 px-4 py-2 rounded-pill ${
-                          u.administrador
-                            ? "bg-primary bg-gradient"
-                            : "bg-secondary bg-gradient text-dark bg-opacity-25"
-                        }`}
+                        className={`badge fs-6 px-4 py-2 rounded-pill ${u.administrador
+                          ? "bg-primary bg-gradient"
+                          : "bg-secondary bg-gradient text-dark bg-opacity-25"
+                          }`}
                       >
                         {u.administrador ? "Administrador" : "Usuario"}
                       </span>

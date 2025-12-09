@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
+import { API_URL } from "../../config";
 
 export default function EventoDetalle() {
   const { id } = useParams();
@@ -11,7 +12,7 @@ export default function EventoDetalle() {
 
   const fetchEventoYActividades = async () => {
     try {
-      const eventoResponse = await fetch(`http://localhost:3000/evento/${id}`);
+      const eventoResponse = await fetch(`${API_URL}/evento/${id}`);
       if (!eventoResponse.ok) {
         throw new Error("Error al obtener los detalles del evento");
       }
@@ -19,7 +20,7 @@ export default function EventoDetalle() {
       setEvento(eventoData);
 
       const actividadesResponse = await fetch(
-        `http://localhost:3000/actividadEv/${id}`
+        `${API_URL}/actividadEv/${id}`
       );
       if (!actividadesResponse.ok) {
         throw new Error("Error al obtener las actividades");
@@ -41,7 +42,7 @@ export default function EventoDetalle() {
     if (window.confirm("¿Estás seguro de que quieres eliminar esta actividad?")) {
       try {
         const response = await fetch(
-          `http://localhost:3000/actividad/${actividadId}`,
+          `${API_URL}/actividad/${actividadId}`,
           {
             method: "DELETE",
             credentials: "include",

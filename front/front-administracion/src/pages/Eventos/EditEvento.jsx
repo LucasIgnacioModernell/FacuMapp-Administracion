@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { API_URL } from "../../config";
 
 export default function EditEvento() {
   const { id } = useParams();
@@ -14,7 +15,7 @@ export default function EditEvento() {
   useEffect(() => {
     const fetchEvento = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/evento/${id}`);
+        const response = await fetch(`${API_URL}/evento/${id}`);
         if (!response.ok) {
           throw new Error("Error al obtener el evento");
         }
@@ -37,7 +38,7 @@ export default function EditEvento() {
     e.preventDefault();
 
     try {
-      const response = await fetch(`http://localhost:3000/evento/${id}`, {
+      const response = await fetch(`${API_URL}/evento/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { API_URL } from "../../config";
 
 export default function Eventos() {
   const [eventos, setEventos] = useState([]);
@@ -8,7 +9,7 @@ export default function Eventos() {
 
   const fetchEventos = async () => {
     try {
-      const response = await fetch("http://localhost:3000/evento");
+      const response = await fetch(`${API_URL}/evento`);
       if (!response.ok) {
         throw new Error("Error al obtener los eventos");
       }
@@ -28,7 +29,7 @@ export default function Eventos() {
   const handleDelete = async (id) => {
     if (window.confirm("¿Estás seguro de que quieres eliminar este evento?")) {
       try {
-        const response = await fetch(`http://localhost:3000/evento/${id}`, {
+        const response = await fetch(`${API_URL}/evento/${id}`, {
           method: "DELETE",
           credentials: "include",
         });

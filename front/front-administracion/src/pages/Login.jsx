@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { API_URL } from "../config";
 
 export default function Login() {
   const [nombre, setNombre] = useState("");
@@ -12,13 +13,13 @@ export default function Login() {
     setError("");
 
     try {
-      const response = await fetch("http://localhost:3000/login", {
+      const response = await fetch(`${API_URL}/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ nombre, contrasena }),
-        credentials: 'include', 
+        credentials: 'include',
       });
 
       const data = await response.json();
@@ -68,7 +69,7 @@ export default function Login() {
                 />
               </div>
 
-              {error && 
+              {error &&
                 <div className="alert alert-danger p-2 mb-3 fs-6">{
                   error === "Invalid credentials" ? "Usuario o contraseña incorrectos." : error
                 }</div>
