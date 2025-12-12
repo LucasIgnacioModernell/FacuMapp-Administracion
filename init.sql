@@ -71,11 +71,42 @@ SET FOREIGN_KEY_CHECKS = 1;
 -- INSERTS DE DATOS
 
 -- 1. Insertar Espacios
-INSERT INTO espacio (nombre, descripcion, imagen, capacidad) VALUES 
-('Auditorio Principal', 'Sala magna con capacidad para 500 personas, proyector 4K y sistema de sonido envolvente.', 'auditorio_main.jpg', 500),
-('Laboratorio de Cómputo A', 'Aula equipada con 30 ordenadores de alto rendimiento para talleres técnicos.', 'lab_a.jpg', 30),
-('Jardín Central', 'Espacio al aire libre para actividades recreativas y networking.', 'jardin.jpg', 150),
-('Sala de Reuniones B', 'Sala pequeña para mesas redondas y grupos de trabajo.', 'sala_b.jpg', 20);
+INSERT INTO espacio (nombre, descripcion, imagen, capacidad) VALUES
+('Secretaria de Asuntos Universitarios', 'Oficina administrativa para gestión y atención al personal/alumnos.', 'img/secretaria_de_asuntos_universitarios.jpg', 6),
+('No se', 'Espacio actualmente sin identificación o uso definido.', NULL, 0),
+('Secretaria de asuntos universitarios', 'Oficina administrativa para gestión y atención al personal/alumnos.', 'img/secretaria_de_asuntos_universitarios.jpg', 4),
+('Cocina', 'Espacio de cocina y refrigerio para el personal.', 'img/cocina.jpg', 4),
+('No se', 'Espacio actualmente sin identificación o uso definido.', NULL, 0),
+('Secretaria administrativa', 'Oficina administrativa para gestión y atención al personal/alumnos.', 'img/secretaria_administrativa.jpg', 5),
+('Baño uso exclusivo personal', 'Instalaciones sanitarias.', 'img/bao_uso_exclusivo_personal.jpg', 5),
+('Lactario', 'Espacio privado y cómodo destinado a la lactancia materna.', 'img/lactario.jpg', 2),
+('Direccion de recursos humanos', 'Oficina administrativa para gestión y atención al personal/alumnos.', 'img/direccion_de_recursos_humanos.jpg', 7),
+('Departamento de personal', 'Oficina administrativa para gestión y atención al personal/alumnos.', 'img/departamento_de_personal.jpg', 5),
+('Direccion de administracion - departamento de compras - patrimonio', 'Oficina administrativa para gestión y atención al personal/alumnos.', 'img/direccion_de_administracion_departamento_de_compras_patrimonio.jpg', 7),
+('Direccion de administracion - departamento contable - tesoreria', 'Oficina administrativa para gestión y atención al personal/alumnos.', 'img/direccion_de_administracion_departamento_contable_tesoreria.jpg', 6),
+('Despacho general - mesa de entrada - informes (CORREGIR PUERTA)', 'Oficina administrativa para gestión y atención al personal/alumnos.', 'img/despacho_general_mesa_de_entrada_informes_corregir_puerta.jpg', 6),
+('SECRETARIA ACADEMICA', 'Oficina administrativa para gestión y atención al personal/alumnos.', 'img/secretaria_academica.jpg', 7),
+('No se', 'Espacio actualmente sin identificación o uso definido.', NULL, 0),
+('Equipo interdisciplinario', 'Espacio de trabajo para el equipo de apoyo y orientación.', 'img/equipo_interdisciplinario.jpg', 6),
+('DASUTEN', 'Oficina de la Dirección de Acción Social de la Universidad Tecnológica Nacional.', 'img/dasuten.jpg', 5),
+('PECERA', 'Espacio vidriado de estudio o trabajo colaborativo.', 'img/pecera.jpg', 10),
+('ALUMNOS', 'Oficina de atención a alumnos y gestión académica.', 'img/alumnos.jpg', 5),
+('Adut', 'Oficina gremial de la Asociación de Docentes de la Universidad Tecnológica.', 'img/adut.jpg', 4),
+('Direccion de servicios generales', 'Oficina administrativa para gestión y atención al personal/alumnos.', 'img/direccion_de_servicios_generales.jpg', 8),
+('Baños mixtos', 'Instalaciones sanitarias.', 'img/baos_mixtos.jpg', 4),
+('BUFFET', 'Comedor universitario y servicio de cafetería.', 'img/buffet.jpg', 60),
+('Area tecnica de TIC - redes/servidores', 'Área técnica de servidores, redes y desarrollo de sistemas.', 'img/area_tecnica_de_tic_redes_servidores.jpg', 6),
+('Area tecnica de TIC - Desarrollo / Ciberseguridad', 'Área técnica de servidores, redes y desarrollo de sistemas.', 'img/area_tecnica_de_tic_desarrollo___ciberseguridad.jpg', 6),
+('IEC - Investigacion en enseñanza de las ciencias', 'Oficina de investigación educativa.', 'img/iec_investigacion_en_enseanza_de_las_ciencias.jpg', 5),
+('SUM', 'Salón de Usos Múltiples destinado a eventos, conferencias y actividades recreativas.', 'img/sum.jpg', 120),
+('Direccion Departamento Ciencias Basicas', 'Oficina administrativa para gestión y atención al personal/alumnos.', 'img/direccion_departamento_ciencias_basicas.jpg', 5),
+('Aula 61', 'Aula equipada para el dictado de clases teóricas y prácticas. Cuenta con pizarrón y proyección.', 'img/aula_61.jpg', 66),
+('Laboratorio IEC - Investigacion de Enseñanza de las Ciencias', 'Laboratorio especializado con equipamiento para prácticas científicas y técnicas.', 'img/laboratorio_iec_investigacion_de_enseanza_de_las_ciencias.jpg', 18),
+('Laboratorio Fisica', 'Laboratorio especializado con equipamiento para prácticas científicas y técnicas.', 'img/laboratorio_fisica.jpg', 30),
+('Aula 62', 'Aula equipada para el dictado de clases teóricas y prácticas. Cuenta con pizarrón y proyección.', 'img/aula_62.jpg', 50),
+('Aula 63', 'Aula equipada para el dictado de clases teóricas y prácticas. Cuenta con pizarrón y proyección.', 'img/aula_63.jpg', 51),
+('Laboratorio de fisica 3', 'Laboratorio especializado con equipamiento para prácticas científicas y técnicas.', 'img/laboratorio_de_fisica_3.jpg', 18),
+('Aula 64', 'Aula equipada para el dictado de clases teóricas y prácticas. Cuenta con pizarrón y proyección.', 'img/aula_64.jpg', 40);
 
 -- 2. Insertar Categorías
 INSERT INTO categoria (nombre, color) VALUES 
