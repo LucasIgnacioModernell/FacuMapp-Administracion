@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import Swal from "sweetalert2";
 import { API_URL } from "../../config";
 
 export default function EditActividad() {
@@ -9,27 +10,39 @@ export default function EditActividad() {
   const [fecha, setFecha] = useState("");
   const [horaInicio, setHoraInicio] = useState("");
   const [horaFin, setHoraFin] = useState("");
-  const [error, setError] = useState(null);
+  const [idEspacio, setIdEspacio] = useState("");
+  const [espacios, setEspacios] = useState([]);
+  const [evento, setEvento] = useState(null);
+  const [errors, setErrors] = useState({});
+  const [generalError, setGeneralError] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchActividad = async () => {
       try {
+        const token = localStorage.getItem("token");
         const response = await fetch(
-          `${API_URL}/actividad/${actividadId}`
+          `${API_URL}/actividad/${actividadId}`,
+          {
+            credentials: "include",
+            headers: {
+              ...(token ? { Authorization: `Bearer ${token}` } : {}),
+            },
+          }
         );
         if (!response.ok) {
           throw new Error("Error al obtener la actividad");
         }
         const data = await response.json();
-        setNombre(data.nombre);
-        setDescripcion(data.descripcion);
-        setFecha(new Date(data.fecha).toISOString().split("T")[0]); // Formatear fecha
-        setHoraInicio(data.hora_inicio);
-        setHoraFin(data.hora_fin);
+        setNombre(data.nombre || "");
+        setDescripcion(data.descripcion || "");
+        setFecha(data.fecha || "");
+        setHoraInicio(data.hora_inicio || "");
+        setHoraFin(data.hora_fin || "");
+        setIdEspacio(data.id_espacio ? String(data.id_espacio) : "");
       } catch (error) {
-        setError(error.message);
+        setGeneralError(error.message);
       } finally {
         setLoading(false);
       }
@@ -38,35 +51,139 @@ export default function EditActividad() {
     fetchActividad();
   }, [actividadId]);
 
+  useEffect(() => {
+    const loadEspacios = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const resp = await fetch(`${API_URL}/espacio`, {
+          credentials: "include",
+          headers: {
+            ...(token ? { Authorization: `Bearer ${token}` } : {}),
+          },
+        });
+        const data = await resp.json();
+        setEspacios(Array.isArray(data) ? data : []);
+      } catch (e) {
+        console.error("Error cargando espacios", e);
+      }
+    };
+
+    const loadEvento = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const resp = await fetch(`${API_URL}/evento/${eventoId}`, {
+          credentials: "include",
+          headers: {
+            ...(token ? { Authorization: `Bearer ${token}` } : {}),
+          },
+        });
+        const data = await resp.json();
+        setEvento(data);
+      } catch (e) {
+        console.error("Error cargando evento", e);
+      }
+    };
+
+    loadEspacios();
+    loadEvento();
+  }, [eventoId]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setErrors({});
+    setGeneralError(null);
+
+    // Validaciones del lado cliente
+    const cleanNombre = nombre.trim();
+    const cleanDescripcion = descripcion.trim();
+    const newErrors = {};
+
+    if (!cleanNombre || cleanNombre.length < 1) {
+      newErrors.nombre = "El nombre es obligatorio";
+    } else if (cleanNombre.length > 255) {
+      newErrors.nombre = "El nombre no puede exceder 255 caracteres";
+    }
+
+    if (!cleanDescripcion || cleanDescripcion.length < 1) {
+      newErrors.descripcion = "La descripción es obligatoria";
+    }
+
+    if (!fecha) {
+      newErrors.fecha = "La fecha es obligatoria";
+    } else if (evento) {
+      // Validar que la fecha esté dentro del rango del evento
+      if (fecha < evento.fecha_inicio) {
+        newErrors.fecha = "La fecha de la actividad no puede ser anterior a la fecha de inicio del evento";
+      } else if (fecha > evento.fecha_fin) {
+        newErrors.fecha = "La fecha de la actividad no puede ser posterior a la fecha de fin del evento";
+      }
+    }
+
+    if (!horaInicio) {
+      newErrors.horaInicio = "La hora de inicio es obligatoria";
+    }
+
+    if (!horaFin) {
+      newErrors.horaFin = "La hora de fin es obligatoria";
+    } else if (horaInicio && horaFin <= horaInicio) {
+      newErrors.horaFin = "La hora de fin debe ser posterior a la hora de inicio";
+    }
+
+    if (!idEspacio) {
+      newErrors.idEspacio = "Debes seleccionar un espacio";
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
 
     try {
+      const token = localStorage.getItem("token");
+
       const response = await fetch(
         `${API_URL}/actividad/${actividadId}`,
         {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
+            ...(token ? { Authorization: `Bearer ${token}` } : {}),
           },
           body: JSON.stringify({
-            nombre,
-            descripcion,
+            nombre: cleanNombre,
+            descripcion: cleanDescripcion,
             fecha,
             hora_inicio: horaInicio,
             hora_fin: horaFin,
+            id_espacio: Number(idEspacio),
+            id_evento: Number(eventoId),
           }),
           credentials: "include",
         }
       );
 
       if (!response.ok) {
-        throw new Error("Error al actualizar la actividad");
+        if (response.status === 403) {
+          throw new Error("No tienes permisos para realizar esta acción. Debes ser administrador.");
+        }
+        const { error: backendError } = await response.json().catch(() => ({}));
+        throw new Error(backendError || "Error al actualizar la actividad");
       }
 
+      await Swal.fire({
+        icon: "success",
+        title: "¡Éxito!",
+        text: "Actividad actualizada exitosamente",
+        confirmButtonText: "Aceptar"
+      });
       navigate(`/eventos/${eventoId}`);
     } catch (error) {
-      setError(error.message);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: error.message || "Error al actualizar la actividad",
+        confirmButtonText: "Aceptar"
+      });
     }
   };
 
@@ -74,14 +191,14 @@ export default function EditActividad() {
     return <div>Cargando...</div>;
   }
 
-  if (error) {
-    return <div>Error: {error}</div>;
+  if (generalError && !nombre) {
+    return <div>Error: {generalError}</div>;
   }
 
   return (
     <div className="container-fluid px-4 mt-5">
       <h1 className="mb-4 display-6 fw-bold">Editar Actividad</h1>
-      {error && <div className="alert alert-danger">{error}</div>}
+      {generalError && <div className="alert alert-danger">{generalError}</div>}
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <label htmlFor="nombre" className="form-label">
@@ -89,25 +206,25 @@ export default function EditActividad() {
           </label>
           <input
             type="text"
-            className="form-control"
+            className={`form-control ${errors.nombre ? 'is-invalid' : ''}`}
             id="nombre"
             value={nombre}
             onChange={(e) => setNombre(e.target.value)}
-            required
           />
+          {errors.nombre && <div className="invalid-feedback">{errors.nombre}</div>}
         </div>
         <div className="mb-3">
           <label htmlFor="descripcion" className="form-label">
             Descripción
           </label>
           <textarea
-            className="form-control"
+            className={`form-control ${errors.descripcion ? 'is-invalid' : ''}`}
             id="descripcion"
             rows="3"
             value={descripcion}
             onChange={(e) => setDescripcion(e.target.value)}
-            required
           ></textarea>
+          {errors.descripcion && <div className="invalid-feedback">{errors.descripcion}</div>}
         </div>
         <div className="mb-3">
           <label htmlFor="fecha" className="form-label">
@@ -115,12 +232,14 @@ export default function EditActividad() {
           </label>
           <input
             type="date"
-            className="form-control"
+            className={`form-control ${errors.fecha ? 'is-invalid' : ''}`}
             id="fecha"
             value={fecha}
             onChange={(e) => setFecha(e.target.value)}
-            required
+            onInvalid={(e) => e.target.setCustomValidity(' ')}
+            onInput={(e) => e.target.setCustomValidity('')}
           />
+          {errors.fecha && <div className="invalid-feedback">{errors.fecha}</div>}
         </div>
         <div className="row">
           <div className="col-md-6 mb-3">
@@ -129,12 +248,14 @@ export default function EditActividad() {
             </label>
             <input
               type="time"
-              className="form-control"
+              className={`form-control ${errors.horaInicio ? 'is-invalid' : ''}`}
               id="horaInicio"
               value={horaInicio}
               onChange={(e) => setHoraInicio(e.target.value)}
-              required
+              onInvalid={(e) => e.target.setCustomValidity(' ')}
+              onInput={(e) => e.target.setCustomValidity('')}
             />
+            {errors.horaInicio && <div className="invalid-feedback">{errors.horaInicio}</div>}
           </div>
           <div className="col-md-6 mb-3">
             <label htmlFor="horaFin" className="form-label">
@@ -142,13 +263,34 @@ export default function EditActividad() {
             </label>
             <input
               type="time"
-              className="form-control"
+              className={`form-control ${errors.horaFin ? 'is-invalid' : ''}`}
               id="horaFin"
               value={horaFin}
               onChange={(e) => setHoraFin(e.target.value)}
-              required
+              onInvalid={(e) => e.target.setCustomValidity(' ')}
+              onInput={(e) => e.target.setCustomValidity('')}
             />
+            {errors.horaFin && <div className="invalid-feedback">{errors.horaFin}</div>}
           </div>
+        </div>
+        <div className="mb-3">
+          <label htmlFor="espacio" className="form-label">
+            Espacio
+          </label>
+          <select
+            id="espacio"
+            className={`form-select ${errors.idEspacio ? 'is-invalid' : ''}`}
+            value={idEspacio}
+            onChange={(e) => setIdEspacio(e.target.value)}
+          >
+            <option value="">Selecciona un espacio</option>
+            {espacios.map((esp) => (
+              <option key={esp.id} value={esp.id}>
+                {esp.nombre}
+              </option>
+            ))}
+          </select>
+          {errors.idEspacio && <div className="invalid-feedback">{errors.idEspacio}</div>}
         </div>
         <button type="submit" className="btn btn-primary">
           Guardar Cambios

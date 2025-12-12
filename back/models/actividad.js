@@ -2,16 +2,25 @@ import { query } from "../config/database.js";
 export class ActividadModel {
 
   static getAll = async (id) => {  
-    const actividades = await query("SELECT * FROM actividad WHERE id_evento = ?", [id]);
+    const actividades = await query(
+      `SELECT id, nombre, descripcion,
+              DATE_FORMAT(fecha, '%Y-%m-%d') as fecha,
+              hora_inicio, hora_fin, id_espacio, id_evento
+       FROM actividad WHERE id_evento = ?`, 
+      [id]
+    );
     return actividades;
   };
 
   static getById = async (id) => {
-    const actividad  = await query(
-      "SELECT * FROM actividad WHERE id = ?",
+    const actividad = await query(
+      `SELECT id, nombre, descripcion,
+              DATE_FORMAT(fecha, '%Y-%m-%d') as fecha,
+              hora_inicio, hora_fin, id_espacio, id_evento
+       FROM actividad WHERE id = ?`,
       [id]
     );
-    return actividad;
+    return actividad[0] ?? null;
   };
 
   static postActividad = async (input) => {
@@ -24,6 +33,33 @@ export class ActividadModel {
       id_espacio,
       id_evento,
     } = await input;
+
+    // Validar que la fecha de la actividad esté dentro del rango del evento
+    const [evento] = await query(
+      "SELECT fecha_inicio, fecha_fin FROM evento WHERE id = ?",
+      [id_evento]
+    );
+
+    if (!evento) {
+      throw new Error('El evento no existe');
+    }
+
+    const fechaActividad = new Date(fecha);
+    const fechaInicio = new Date(evento.fecha_inicio);
+    const fechaFin = new Date(evento.fecha_fin);
+
+    // Comparar solo las fechas (sin hora)
+    fechaActividad.setHours(0, 0, 0, 0);
+    fechaInicio.setHours(0, 0, 0, 0);
+    fechaFin.setHours(0, 0, 0, 0);
+
+    if (fechaActividad < fechaInicio) {
+      throw new Error('La fecha de la actividad no puede ser anterior a la fecha de inicio del evento');
+    }
+
+    if (fechaActividad > fechaFin) {
+      throw new Error('La fecha de la actividad no puede ser posterior a la fecha de fin del evento');
+    }
 
     await query(
       `INSERT INTO actividad (nombre,
@@ -48,11 +84,41 @@ export class ActividadModel {
   };
 
   static updateActividad = async (id, input) => { 
-    const  actividad = await this.getById(id);
+    const actividad = await this.getById(id);
+    if (!actividad) {
+      throw new Error('Actividad no encontrada');
+    }
     const newActividad = {
-      ...actividad[0],
+      ...actividad,
       ...input,
     };
+
+    // Validar que la fecha de la actividad esté dentro del rango del evento
+    const [evento] = await query(
+      "SELECT fecha_inicio, fecha_fin FROM evento WHERE id = ?",
+      [newActividad.id_evento]
+    );
+
+    if (!evento) {
+      throw new Error('El evento no existe');
+    }
+
+    const fechaActividad = new Date(newActividad.fecha);
+    const fechaInicio = new Date(evento.fecha_inicio);
+    const fechaFin = new Date(evento.fecha_fin);
+
+    // Comparar solo las fechas (sin hora)
+    fechaActividad.setHours(0, 0, 0, 0);
+    fechaInicio.setHours(0, 0, 0, 0);
+    fechaFin.setHours(0, 0, 0, 0);
+
+    if (fechaActividad < fechaInicio) {
+      throw new Error('La fecha de la actividad no puede ser anterior a la fecha de inicio del evento');
+    }
+
+    if (fechaActividad > fechaFin) {
+      throw new Error('La fecha de la actividad no puede ser posterior a la fecha de fin del evento');
+    }
 
     await query(
       `UPDATE actividad
