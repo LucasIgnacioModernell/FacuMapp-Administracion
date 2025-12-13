@@ -93,6 +93,7 @@ export default function AddActividad() {
             onChange={(e) => setDescripcion(e.target.value)}
             required
           ></textarea>
+        </div>
         <div className="mb-3">
           <label htmlFor="fecha" className="form-label">
             Fecha
@@ -125,7 +126,6 @@ export default function AddActividad() {
             ))}
           </select>
         </div>
-        <div className="row">
         <div className="row">
           <div className="col-md-6 mb-3">
             <label htmlFor="horaInicio" className="form-label">

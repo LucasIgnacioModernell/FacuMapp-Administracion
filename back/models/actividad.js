@@ -3,14 +3,23 @@ export class ActividadModel {
 
   static getAll = async (id) => {  
     const actividades = await query(
-      `SELECT id, nombre, descripcion,
-              DATE_FORMAT(fecha, '%Y-%m-%d') as fecha,
-              hora_inicio, hora_fin, id_espacio, id_evento
-       FROM actividad WHERE id_evento = ?`, 
+      `SELECT 
+          a.id, 
+          a.nombre, 
+          a.descripcion,
+          DATE_FORMAT(a.fecha, '%Y-%m-%d') as fecha,
+          a.hora_inicio, 
+          a.hora_fin, 
+          a.id_evento,
+          e.id AS espacio_id,          -- Traemos el ID del espacio
+          e.nombre AS espacio_nombre   -- Traemos el Nombre del espacio (con alias)
+       FROM actividad a
+       LEFT JOIN espacio e ON a.id_espacio = e.id
+       WHERE a.id_evento = ?`, 
       [id]
     );
     return actividades;
-  };
+};
 
   static getById = async (id) => {
     const actividad = await query(

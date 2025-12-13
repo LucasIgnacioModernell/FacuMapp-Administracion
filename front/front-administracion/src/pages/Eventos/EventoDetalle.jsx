@@ -119,6 +119,9 @@ export default function EventoDetalle() {
                   <p className="card-text">
                     <small className="text-muted">
                       {act.fecha.split('-').reverse().join('/')}
+                    </small> <br />
+                    <small className="text-muted">
+                      {act.espacio_nombre}
                     </small>
                   </p>
                   <p className="card-text">
