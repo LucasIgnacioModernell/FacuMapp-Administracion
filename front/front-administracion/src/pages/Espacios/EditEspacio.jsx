@@ -25,7 +25,7 @@ export default function EditEspacio() {
     const fetchEspacio = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await fetch(`${API_URL}/espacio/${id}` , {
+        const response = await fetch(`${API_URL}/espacio/${id}`, {
           credentials: "include",
           headers: {
             ...(token ? { Authorization: `Bearer ${token}` } : {}),
@@ -108,7 +108,7 @@ export default function EditEspacio() {
           ...(token2 ? { Authorization: `Bearer ${token2}` } : {}),
         },
       });
-        if (listRes.ok) {
+      if (listRes.ok) {
         const cats = await listRes.json();
         setCategories(cats || []);
         // select the newly created category by matching name (best-effort)
@@ -209,14 +209,14 @@ export default function EditEspacio() {
 
     try {
       const token = localStorage.getItem("token");
-        const response = await fetch(`${API_URL}/espacio/${id}`, {
-          method: "PUT",
-          body: formData,
-          credentials: "include",
-          headers: {
-            ...(token ? { Authorization: `Bearer ${token}` } : {}),
-          },
-        });
+      const response = await fetch(`${API_URL}/espacio/${id}`, {
+        method: "PUT",
+        body: formData,
+        credentials: "include",
+        headers: {
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+      });
 
       if (!response.ok) {
         if (response.status === 403) {
@@ -254,7 +254,8 @@ export default function EditEspacio() {
     return (
       <div className="page-container">
         <div className="alert alert-danger d-flex align-items-center">
-          <i className="bi bi-exclamation-triangle-fill me-2"></i>
+          <i className="bi bi-building me-2"></i>
+
           Error: {generalError}
         </div>
       </div>
@@ -264,113 +265,118 @@ export default function EditEspacio() {
   return (
     <div className="page-container">
       <div className="page-header">
-        <div>
-          <h1>
-            <i className="bi bi-pencil-square me-2"></i>
-            Editar Espacio
-          </h1>
-          <p className="text-muted mb-0">Modifique los campos que desee actualizar</p>
-        </div>
+        <h1>Editar espacio</h1>
+        <p className="page-subtitle">Modifique los campos que desee actualizar</p>
       </div>
 
       <div className="custom-card">
-        {generalError && (
-          <div className="alert alert-danger d-flex align-items-center mb-4">
-            <i className="bi bi-exclamation-triangle-fill me-2"></i>
-            {generalError}
-          </div>
-        )}
-
         <form onSubmit={handleSubmit}>
-          <div className="row">
-            <div className="col-md-6 mb-3">
-              <label htmlFor="nombre" className="form-label">
-                <i className="bi bi-building me-2"></i>
-                Nombre del Espacio
-              </label>
-              <input
-                type="text"
-                className={`form-control ${errors.nombre ? 'is-invalid' : ''}`}
-                id="nombre"
-                value={nombre}
-                onChange={(e) => setNombre(e.target.value)}
-              />
-              {errors.nombre && <div className="invalid-feedback">{errors.nombre}</div>}
-            </div>
+          <div className="form-content">
 
-            <div className="col-md-6 mb-3">
-              <label htmlFor="capacidad" className="form-label">
-                <i className="bi bi-people me-2"></i>
-                Capacidad
-              </label>
-              <input
-                type="number"
-                className={`form-control ${errors.capacidad ? 'is-invalid' : ''}`}
-                id="capacidad"
-                value={capacidad}
-                onChange={(e) => setCapacidad(e.target.value)}
-              />
-              {errors.capacidad && <div className="invalid-feedback">{errors.capacidad}</div>}
+          {/* Nombre + Capacidad */}
+          <div className="m4">
+            <div className="row g-3">
+              {/* Nombre ocupa más espacio */}
+              <div className="col-md-8">
+                <label className="form-label-custom d-block">
+                  Nombre del espacio
+                </label>
+                <input
+                  className={`form-control-custom w-100 ${errors.nombre ? "is-invalid" : ""}`}
+                  value={nombre}
+                  onChange={(e) => setNombre(e.target.value)}
+                />
+                {errors.nombre && (
+                  <div className="invalid-feedback">{errors.nombre}</div>
+                )}
+              </div>
+
+              {/* Capacidad más chica */}
+              <div className="col-md-4">
+                <label className="form-label-custom d-block">
+                  Capacidad
+                </label>
+                <input
+                  type="number"
+                  className={`form-control-custom w-100 ${errors.capacidad ? "is-invalid" : ""}`}
+                  value={capacidad}
+                  onChange={(e) => setCapacidad(e.target.value)}
+                />
+                {errors.capacidad && (
+                  <div className="invalid-feedback">{errors.capacidad}</div>
+                )}
+              </div>
             </div>
           </div>
 
-          <div className="mb-3">
-            <label htmlFor="descripcion" className="form-label">
-              <i className="bi bi-text-paragraph me-2"></i>
+
+
+          {/* Descripción */}
+          <div className="m4">
+            <label className="form-label-custom d-block">
               Descripción
             </label>
             <textarea
-              className={`form-control ${errors.descripcion ? 'is-invalid' : ''}`}
-              id="descripcion"
-              rows="4"
+              rows="5"
+              className={`form-control-custom w-100 ${errors.descripcion ? "is-invalid" : ""}`}
               value={descripcion}
               onChange={(e) => setDescripcion(e.target.value)}
-            ></textarea>
-            {errors.descripcion && <div className="invalid-feedback">{errors.descripcion}</div>}
+            />
+            {errors.descripcion && (
+              <div className="invalid-feedback">{errors.descripcion}</div>
+            )}
           </div>
 
+
+          {/* Imagen */}
+          {/* Imagen */}
           <div className="mb-4">
-            <label htmlFor="imagen" className="form-label">
-              <i className="bi bi-image me-2"></i>
-              Imagen
+            <label className="form-label-custom d-block mb-2">
+              Imagen del espacio
             </label>
+
             {currentImagen && (
-              <div className="mb-3">
-                <p className="text-muted mb-2">Imagen actual:</p>
+              <div className="image-preview mb-3">
                 <img
                   src={`${API_URL}/uploads/${currentImagen}`}
                   alt="Imagen actual"
-                  className="img-thumbnail"
-                  style={{ maxHeight: "200px", maxWidth: "100%" }}
+                  style={{ maxHeight: 180 }}
                 />
               </div>
             )}
+
             <input
               type="file"
-              className="form-control"
-              id="imagen"
+              className="form-control-custom w-100"
               accept="image/*"
-              onChange={(e) => setImagen(e.target.files[0])}
+              onChange={e => setImagen(e.target.files[0])}
             />
-            <small className="text-muted">Seleccione una nueva imagen solo si desea cambiarla</small>
+
+            <small className="text-muted d-block mt-2">
+              Solo seleccione una imagen si desea reemplazar la actual
+            </small>
           </div>
 
-          <div className="mb-4">
-            <label className="form-label">
-              <i className="bi bi-tags me-2"></i>
+          {/* Categorías */}
+          {/* Categorías */}
+          <div className="m4">
+            <label className="form-label-custom d-block mb-2">
               Categorías
             </label>
-            <div className="mb-2 d-flex flex-wrap gap-2">
-              {categories.map((cat) => {
-                const isSelected = selectedCategories.includes(cat.id);
-                const bg = cat.color || '#6c757d';
+
+            {/* Categorías existentes */}
+            <div className="d-flex flex-wrap gap-2 mb-4">
+              {categories.map(cat => {
+                const active = selectedCategories.includes(cat.id);
+
                 return (
                   <button
-                    type="button"
                     key={cat.id}
-                    className={`btn btn-sm ${isSelected ? 'btn-primary' : 'btn-outline-secondary'}`}
+                    type="button"
+                    className={`btn btn-sm ${active ? "btn-primary" : "btn-outline-secondary"
+                      }`}
+                    style={active ? { backgroundColor: cat.color, borderColor: cat.color } : undefined}
                     onClick={() => toggleCategory(cat.id)}
-                    style={{ backgroundColor: isSelected ? bg : undefined, borderColor: isSelected ? bg : undefined, color: isSelected ? '#fff' : undefined }}
                   >
                     {cat.nombre}
                   </button>
@@ -378,36 +384,47 @@ export default function EditEspacio() {
               })}
             </div>
 
-            <div className="row g-2 align-items-center">
-              <div className="col-auto">
-                <input type="text" className="form-control form-control-sm" placeholder="Nueva categoría" value={newCatNombre} onChange={(e) => setNewCatNombre(e.target.value)} />
-              </div>
-              <div className="col-auto">
-                <input type="color" title="Color" className="form-control form-control-sm p-0" style={{width:40}} value={newCatColor} onChange={(e)=>setNewCatColor(e.target.value)} />
-              </div>
-              <div className="col-auto">
-                <button className="btn btn-sm btn-outline-success" disabled={creatingCategory} type="button" onClick={handleCreateCategory}>Agregar</button>
-              </div>
+            {/* Crear nueva categoría */}
+            <div className="d-flex gap-2 align-items-center">
+              <input
+                className="form-control-custom form-control-sm"
+                placeholder="Nueva categoría"
+                value={newCatNombre}
+                onChange={e => setNewCatNombre(e.target.value)}
+              />
+
+              <input
+                type="color"
+                className="form-control-custom form-control-sm p-0"
+                style={{ width: 36, height: 36 }}
+                value={newCatColor}
+                onChange={e => setNewCatColor(e.target.value)}
+              />
+
+              <button
+                type="button"
+                className="btn btn-outline-success btn-sm px-3"
+                onClick={handleCreateCategory}
+              >
+                Agregar
+              </button>
             </div>
-            <small className="text-muted d-block mt-2">Seleccione las categorías del espacio o cree una nueva.</small>
+
+            <small className="text-muted d-block mt-2">
+              Seleccione una o más categorías o cree una nueva
+            </small>
           </div>
 
-          <div className="d-flex gap-2 justify-content-end">
-            <button
-              type="button"
-              className="btn btn-outline-secondary"
-              onClick={() => navigate('/espacios')}
-            >
-              <i className="bi bi-x-circle me-2"></i>
-              Cancelar
-            </button>
-            <button type="submit" className="btn btn-success">
-              <i className="bi bi-check-circle me-2"></i>
-              Guardar Cambios
-            </button>
+
+          {/* Acciones */}
+          <div className="d-flex justify-content-end gap-2">
+            <button type="button" className="btn btn-outline-secondary" onClick={() => navigate("/espacios")}>Cancelar</button>
+            <button type="submit" className="btn btn-primary px-4">Guardar cambios</button>
+          </div>
           </div>
         </form>
       </div>
     </div>
   );
+
 }

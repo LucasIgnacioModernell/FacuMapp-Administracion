@@ -6,18 +6,33 @@
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 1.5rem;
 }
+
 .map-container {
   height: 80vh;
   overflow-y: auto;
   text-align: center;
   background-color: #fff;
 }
-.focus{
-   &:hover {
+
+.focus {
+  &:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
   }
 }
+.badge-custom {
+  font-size: 0.75rem;
+  padding: 0.35rem 0.6rem;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 .custom-card {
   background: white;
   border: 1px solid #e0e0e0;
@@ -28,11 +43,11 @@
   // CLAVE 1: Flexbox vertical y altura completa
   display: flex;
   flex-direction: column;
-  height: 100%; 
+  height: 100%;
 
   &:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
   }
 
   // Estilo de la imagen
@@ -41,6 +56,7 @@
     width: 100%;
     background-color: #f8f9fa; // Color de fondo si no carga
     margin: 0;
+
     img {
       width: 100%;
       height: 100%;
@@ -63,11 +79,12 @@
     }
 
     .card-text {
-      color: #666;
-      font-size: 0.9rem;
-      margin-bottom: 1rem;
-      // Opcional: limitar a 3 lineas para que se vean más uniformes
+      color: #6b7280;
+      font-size: 0.95rem;
+      line-height: 1.4;
+
       display: -webkit-box;
+      -webkit-line-clamp: 3; 
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
@@ -76,13 +93,16 @@
       font-size: 0.85rem;
       color: #888;
       margin-bottom: 1rem;
-      
-      i { color: #ffc107; margin-right: 5px; }
+
+      i {
+        color: #ffc107;
+        margin-right: 5px;
+      }
     }
 
     // CLAVE 3: El botón empuja hacia abajo
     .btn-action {
-      margin-top: auto; 
+      margin-top: auto;
       width: 100%;
     }
   }

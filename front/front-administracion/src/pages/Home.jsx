@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { API_URL } from "../config";
+import './Home.css';
 
 export default function Home() {
   const [stats, setStats] = useState({ eventos: 0, espacios: 0, actividades: 0 });
@@ -87,45 +88,62 @@ export default function Home() {
       )}
 
       {!loading && !error && (
-        <div className="grid-container mb-4">
+        <div className="stats-grid">
           {/* Card Eventos */}
-          <div className="stat-card stat-card-primary">
-            <div className="stat-icon">
+          <div className="gradient-card gradient-purple">
+            <div className="gradient-card-decoration"></div>
+            <div className="gradient-card-icon">
               <i className="bi bi-calendar-event"></i>
             </div>
-            <div className="stat-content">
-              <h6>Eventos</h6>
-              <h2>{stats.eventos}</h2>
-              <p className="mb-3">
-                {stats.eventos === 0 ? 'No hay eventos' : 
-                 stats.eventos === 1 ? '1 evento registrado' : 
-                 `${stats.eventos} eventos registrados`}
-              </p>
-              <Link to="/eventos" className="btn btn-sm btn-custom">
-                <i className="bi bi-arrow-right me-2"></i>
-                Gestionar Eventos
-              </Link>
-            </div>
+            <h2 className="gradient-card-number">{stats.eventos}</h2>
+            <h6 className="gradient-card-label">Eventos</h6>
+            <p className="gradient-card-description">
+              {stats.eventos === 0 ? 'No hay eventos' : 
+               stats.eventos === 1 ? '1 evento registrado' : 
+               `${stats.eventos} eventos registrados`}
+            </p>
+            <Link to="/eventos" className="gradient-card-btn">
+              <span>Gestionar</span>
+              <i className="bi bi-arrow-right"></i>
+            </Link>
           </div>
 
           {/* Card Espacios */}
-          <div className="stat-card stat-card-success">
-            <div className="stat-icon">
+          <div className="gradient-card gradient-pink">
+            <div className="gradient-card-decoration"></div>
+            <div className="gradient-card-icon">
               <i className="bi bi-building"></i>
             </div>
-            <div className="stat-content">
-              <h6>Espacios</h6>
-              <h2>{stats.espacios}</h2>
-              <p className="mb-3">
-                {stats.espacios === 0 ? 'No hay espacios' : 
-                 stats.espacios === 1 ? '1 espacio registrado' : 
-                 `${stats.espacios} espacios registrados`}
-              </p>
-              <Link to="/espacios" className="btn btn-sm btn-custom">
-                <i className="bi bi-arrow-right me-2"></i>
-                Gestionar Espacios
-              </Link>
+            <h2 className="gradient-card-number">{stats.espacios}</h2>
+            <h6 className="gradient-card-label">Espacios</h6>
+            <p className="gradient-card-description">
+              {stats.espacios === 0 ? 'No hay espacios' : 
+               stats.espacios === 1 ? '1 espacio registrado' : 
+               `${stats.espacios} espacios registrados`}
+            </p>
+            <Link to="/espacios" className="gradient-card-btn">
+              <span>Gestionar</span>
+              <i className="bi bi-arrow-right"></i>
+            </Link>
+          </div>
+
+          {/* Card Actividades */}
+          <div className="gradient-card gradient-blue">
+            <div className="gradient-card-decoration"></div>
+            <div className="gradient-card-icon">
+              <i className="bi bi-list-task"></i>
             </div>
+            <h2 className="gradient-card-number">{stats.actividades}</h2>
+            <h6 className="gradient-card-label">Actividades</h6>
+            <p className="gradient-card-description">
+              {stats.actividades === 0 ? 'No hay actividades' : 
+               stats.actividades === 1 ? '1 actividad registrada' : 
+               `${stats.actividades} actividades registradas`}
+            </p>
+            <Link to="/actividades" className="gradient-card-btn">
+              <span>Gestionar</span>
+              <i className="bi bi-arrow-right"></i>
+            </Link>
           </div>
         </div>
       )}
