@@ -2,8 +2,7 @@ import { query } from "../config/database.js";
 export class ActividadModel {
 
   static getAll = async (id) => {  
-    const actividades = await query(
-      `SELECT 
+    let queryStr = `SELECT 
           a.id, 
           a.nombre, 
           a.descripcion,
@@ -14,8 +13,12 @@ export class ActividadModel {
           e.id AS espacio_id,          -- Traemos el ID del espacio
           e.nombre AS espacio_nombre   -- Traemos el Nombre del espacio (con alias)
        FROM actividad a
-       LEFT JOIN espacio e ON a.id_espacio = e.id
-       WHERE a.id_evento = ?`, 
+       LEFT JOIN espacio e ON a.id_espacio = e.id`
+    if (id) {
+      queryStr += ` WHERE a.id_evento = ?`;
+    }
+    const actividades = await query(
+      queryStr,
       [id]
     );
     return actividades;
