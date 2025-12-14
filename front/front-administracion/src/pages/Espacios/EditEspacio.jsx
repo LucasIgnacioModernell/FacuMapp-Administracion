@@ -269,7 +269,7 @@ export default function EditEspacio() {
         <p className="page-subtitle">Modifique los campos que desee actualizar</p>
       </div>
 
-      <div className="custom-card">
+      <div className="custom-card ">
         <form onSubmit={handleSubmit}>
           <div className="form-content">
 
@@ -278,11 +278,11 @@ export default function EditEspacio() {
             <div className="row g-3">
               {/* Nombre ocupa más espacio */}
               <div className="col-md-8">
-                <label className="form-label-custom d-block">
+                <label className="form-label d-block">
                   Nombre del espacio
                 </label>
                 <input
-                  className={`form-control-custom w-100 ${errors.nombre ? "is-invalid" : ""}`}
+                  className={`form-control w-100 ${errors.nombre ? "is-invalid" : ""}`}
                   value={nombre}
                   onChange={(e) => setNombre(e.target.value)}
                 />
@@ -293,12 +293,12 @@ export default function EditEspacio() {
 
               {/* Capacidad más chica */}
               <div className="col-md-4">
-                <label className="form-label-custom d-block">
+                <label className="form-label d-block">
                   Capacidad
                 </label>
                 <input
                   type="number"
-                  className={`form-control-custom w-100 ${errors.capacidad ? "is-invalid" : ""}`}
+                  className={`form-control w-100 ${errors.capacidad ? "is-invalid" : ""}`}
                   value={capacidad}
                   onChange={(e) => setCapacidad(e.target.value)}
                 />
@@ -313,12 +313,12 @@ export default function EditEspacio() {
 
           {/* Descripción */}
           <div className="m4">
-            <label className="form-label-custom d-block">
+            <label className="form-label d-block">
               Descripción
             </label>
             <textarea
               rows="5"
-              className={`form-control-custom w-100 ${errors.descripcion ? "is-invalid" : ""}`}
+              className={`form-control w-100 ${errors.descripcion ? "is-invalid" : ""}`}
               value={descripcion}
               onChange={(e) => setDescripcion(e.target.value)}
             />
@@ -331,7 +331,7 @@ export default function EditEspacio() {
           {/* Imagen */}
           {/* Imagen */}
           <div className="mb-4">
-            <label className="form-label-custom d-block mb-2">
+            <label className="form-label d-block mb-2">
               Imagen del espacio
             </label>
 
@@ -347,7 +347,7 @@ export default function EditEspacio() {
 
             <input
               type="file"
-              className="form-control-custom w-100"
+              className="form-control w-100"
               accept="image/*"
               onChange={e => setImagen(e.target.files[0])}
             />
@@ -360,7 +360,7 @@ export default function EditEspacio() {
           {/* Categorías */}
           {/* Categorías */}
           <div className="m4">
-            <label className="form-label-custom d-block mb-2">
+            <label className="form-label d-block mb-2">
               Categorías
             </label>
 
@@ -387,7 +387,7 @@ export default function EditEspacio() {
             {/* Crear nueva categoría */}
             <div className="d-flex gap-2 align-items-center">
               <input
-                className="form-control-custom form-control-sm"
+                className="form-control form-control-sm"
                 placeholder="Nueva categoría"
                 value={newCatNombre}
                 onChange={e => setNewCatNombre(e.target.value)}
@@ -395,7 +395,7 @@ export default function EditEspacio() {
 
               <input
                 type="color"
-                className="form-control-custom form-control-sm p-0"
+                className="form-control form-control-sm p-0"
                 style={{ width: 36, height: 36 }}
                 value={newCatColor}
                 onChange={e => setNewCatColor(e.target.value)}
@@ -418,8 +418,12 @@ export default function EditEspacio() {
 
           {/* Acciones */}
           <div className="d-flex justify-content-end gap-2">
-            <button type="button" className="btn btn-outline-secondary" onClick={() => navigate("/espacios")}>Cancelar</button>
-            <button type="submit" className="btn btn-primary px-4">Guardar cambios</button>
+            <button type="button" className="btn btn-outline-secondary" onClick={() => navigate("/espacios")}>
+              <i className="bi bi-x-circle me-2"></i>
+              Cancelar</button>
+            <button type="submit" className="btn btn-primary px-4">
+              <i className="bi bi-check-circle me-2"></i>
+              Guardar cambios</button>
           </div>
           </div>
         </form>

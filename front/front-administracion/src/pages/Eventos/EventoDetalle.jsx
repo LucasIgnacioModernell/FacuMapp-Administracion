@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { API_URL } from "../../config";
+import "../../App.scss";
 
 export default function EventoDetalle() {
   const { id } = useParams();
@@ -109,43 +110,55 @@ export default function EventoDetalle() {
         </Link>
       </div>
       {actividades.length > 0 ? (
-        <div className="row">
+        <div className="actividades-grid">
           {actividades.map((act) => (
-            <div key={act.id} className="col-12 col-md-6 col-lg-4 mb-3">
-              <div className="card">
-                <div className="card-body">
-                  <h5 className="card-title">{act.nombre}</h5>
-                  <p className="card-text">{act.descripcion}</p>
-                  <p className="card-text">
-                    <small className="text-muted">
-                      {act.fecha.split('-').reverse().join('/')}
-                    </small> <br />
-                    <small className="text-muted">
-                      {act.espacio_nombre}
-                    </small>
-                  </p>
-                  <p className="card-text">
-                    <small className="text-muted">
-                      {act.hora_inicio} - {act.hora_fin}
-                    </small>
-                  </p>
-                  <div className="d-flex justify-content-between">
-                    <Link
-                      to={`/eventos/${id}/edit-actividad/${act.id}`}
-                      className="btn btn-sm btn-outline-primary"
-                    >
-                      Editar
-                    </Link>
-                    <button
-                      className="btn btn-sm btn-outline-danger"
-                      onClick={() => handleDelete(act.id)}
-                    >
-                      Eliminar
-                    </button>
+            <div key={act.id} className="actividad-card">
+              <div className="actividad-card-body">
+                <h5 className="actividad-card-title">{act.nombre}</h5>
+
+                <p className="actividad-card-description">
+                  {act.descripcion}
+                </p>
+
+                <div className="actividad-card-meta">
+                  <div className="actividad-meta-item">
+                    <i className="bi bi-calendar-day"></i>
+                    <span>{act.fecha.split('-').reverse().join('/')}</span>
                   </div>
+
+                  <div className="actividad-meta-item">
+                    <i className="bi bi-clock"></i>
+                    <span>{act.hora_inicio} - {act.hora_fin}</span>
+                  </div>
+
+                  <div className="actividad-meta-item">
+                    <i className="bi bi-geo-alt"></i>
+                    <span>{act.espacio_nombre}</span>
+                  </div>
+                </div>
+
+                <div className="actividad-card-actions">
+                  <Link
+                    to={`/eventos/${id}/edit-actividad/${act.id}`}
+                    className="evento-btn-icon"
+                    title="Editar actividad"
+                  >
+                    <i className="bi bi-pencil"></i>
+                    
+                  </Link>
+
+                  <button
+                    className="evento-btn-icon evento-btn-delete"
+                    onClick={() => handleDelete(act.id)}
+                    title="Eliminar actividad"
+                  >
+                    <i className="bi bi-trash"></i>
+                    
+                  </button>
                 </div>
               </div>
             </div>
+
           ))}
         </div>
       ) : (

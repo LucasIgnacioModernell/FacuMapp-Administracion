@@ -9,6 +9,10 @@ export default function Eventos() {
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const ITEMS_PER_PAGE = 6;
+
+
   const fetchEventos = async () => {
     try {
       const response = await fetch(`${API_URL}/evento`);
@@ -81,6 +85,20 @@ export default function Eventos() {
     ev.descripcion.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const totalPages = Math.ceil(filteredEventos.length / ITEMS_PER_PAGE);
+
+  const paginatedEventos = filteredEventos.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  );
+
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm]);
+
+
+
   if (loading) {
     return (
       <div className="page-container">
@@ -117,7 +135,7 @@ export default function Eventos() {
             {eventos.length} {eventos.length === 1 ? 'evento registrado' : 'eventos registrados'}
           </p>
         </div>
-        <Link to="/add-evento" className="btn btn-success">
+        <Link to="/add-evento" className="btn btn-primary px-4">
           <i className="bi bi-plus-circle me-2"></i>
           Agregar Evento
         </Link>
@@ -128,7 +146,7 @@ export default function Eventos() {
           <i className="bi bi-search position-absolute" style={{ left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#6c757d' }}></i>
           <input
             type="text"
-            className="form-control"
+            className="form-control ps-5"
             placeholder="Buscar eventos por nombre o descripción..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
@@ -153,57 +171,95 @@ export default function Eventos() {
           )}
         </div>
       ) : (
-        <div className="grid-container">
-          {filteredEventos.map((ev) => (
-            <div key={ev.id} className="custom-card">
-              <div className="p-3">
-                <div className="d-flex align-items-start justify-content-between mb-3">
-                  <h5 className="card-title mb-0">{ev.nombre}</h5>
-                  {ev.nombre_espacio && (
-                    <span className="badge bg-success">
-                      <i className="bi bi-geo-alt me-1"></i>
-                      {ev.nombre_espacio}
-                    </span>
-                  )}
-                </div>
-                
-                <p className="card-text text-muted mb-3">{ev.descripcion}</p>
-                
-                <div className="d-flex align-items-center mb-3">
-                  <i className="bi bi-calendar-range text-primary me-2"></i>
-                  <span className="text-muted">
-                    {ev.fecha_inicio.split('-').reverse().join('/')} - {ev.fecha_fin.split('-').reverse().join('/')}
-                  </span>
-                </div>
+        <>
+          <div className="eventos-grid">
+            {paginatedEventos.map((ev) => (
+              <div key={ev.id} className="evento-card-compact">
+                <div className="evento-card-content">
+                  <div className="evento-card-header">
+                    <div className="evento-header-main">
+                      <h5 className="evento-card-title">{ev.nombre}</h5>
 
-                <div className="d-flex gap-2">
-                  <Link
-                    to={`/eventos/${ev.id}`}
-                    className="btn btn-info text-white flex-grow-1"
-                  >
-                    <i className="bi bi-list-ul me-2"></i>
-                    Ver Actividades
-                  </Link>
-                  <Link
-                    to={`/edit-evento/${ev.id}`}
-                    className="btn btn-warning text-white"
-                  >
-                    <i className="bi bi-pencil-square me-2"></i>
-                    Editar
-                  </Link>
-                  <button
-                    className="btn btn-danger"
-                    onClick={() => handleDelete(ev.id)}
-                  >
-                    <i className="bi bi-trash-fill me-2"></i>
-                    Eliminar
-                  </button>
+                      {ev.nombre_espacio && (
+                        <div className="evento-card-location">
+                          <i className="bi bi-geo-alt-fill"></i>
+                          <span>{ev.nombre_espacio}</span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  <p className="evento-card-description">{ev.descripcion}</p>
+
+                  <div className="evento-card-dates">
+                    <i className="bi bi-calendar-check"></i>
+                    <span className="date-text">
+                      {ev.fecha_inicio.split("-").reverse().join("/")}
+                    </span>
+                    <span className="date-separator">→</span>
+                    <span className="date-text">
+                      {ev.fecha_fin.split("-").reverse().join("/")}
+                    </span>
+                  </div>
+
+                  <div className="evento-card-actions">
+                    <Link
+                      to={`/eventos/${ev.id}`}
+                      className="evento-btn evento-btn-primary"
+                    >
+                      <i className="bi bi-list-ul"></i>
+                      <span>Ver Actividades</span>
+                    </Link>
+
+                    <Link
+                      to={`/edit-evento/${ev.id}`}
+                      className="evento-btn-icon"
+                      title="Editar evento"
+                    >
+                      <i className="bi bi-pencil"></i>
+                    </Link>
+
+                    <button
+                      className="evento-btn-icon evento-btn-delete"
+                      onClick={() => handleDelete(ev.id)}
+                      title="Eliminar evento"
+                    >
+                      <i className="bi bi-trash"></i>
+                    </button>
+                  </div>
                 </div>
               </div>
+            ))}
+          </div>
+
+          {totalPages > 1 && (
+            <div className="pagination-futuristic">
+              <button
+                className="pagination-btn prev"
+                disabled={currentPage === 1}
+                onClick={() => setCurrentPage((p) => p - 1)}
+              >
+                <i className="bi bi-chevron-left"></i>
+                <span>Anterior</span>
+              </button>
+
+              <div className="pagination-indicator">
+                {currentPage} / {totalPages}
+              </div>
+
+              <button
+                className="pagination-btn next"
+                disabled={currentPage === totalPages}
+                onClick={() => setCurrentPage((p) => p + 1)}
+              >
+                <span>Siguiente</span>
+                <i className="bi bi-chevron-right"></i>
+              </button>
             </div>
-          ))}
-        </div>
+          )}
+        </>
       )}
     </div>
   );
 }
+

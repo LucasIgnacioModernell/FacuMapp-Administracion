@@ -157,7 +157,7 @@ export default function EditEvento() {
 
   return (
     <div className="page-container">
-      <div className="page-header">
+      <div className="page-header ">
         <div>
           <h1>
             <i className="bi bi-pencil-square me-2"></i>
@@ -167,7 +167,7 @@ export default function EditEvento() {
         </div>
       </div>
 
-      <div className="custom-card">
+      <div className="card  border-0 p-4 shadow-sm">
         {generalError && (
           <div className="alert alert-danger d-flex align-items-center mb-4">
             <i className="bi bi-exclamation-triangle-fill me-2"></i>
@@ -178,7 +178,6 @@ export default function EditEvento() {
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
             <label htmlFor="nombre" className="form-label">
-              <i className="bi bi-calendar-event me-2"></i>
               Nombre del Evento
             </label>
             <input
@@ -193,7 +192,6 @@ export default function EditEvento() {
 
           <div className="mb-3">
             <label htmlFor="descripcion" className="form-label">
-              <i className="bi bi-text-paragraph me-2"></i>
               Descripción
             </label>
             <textarea
@@ -271,7 +269,7 @@ export default function EditEvento() {
               <i className="bi bi-x-circle me-2"></i>
               Cancelar
             </button>
-            <button type="submit" className="btn btn-success">
+            <button type="submit" className="btn btn-primary px-4">
               <i className="bi bi-check-circle me-2"></i>
               Guardar Cambios
             </button>

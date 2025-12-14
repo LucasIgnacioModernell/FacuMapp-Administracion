@@ -121,7 +121,7 @@ export default function AddEvento() {
         </div>
       </div>
 
-      <div className="custom-card">
+      <div className="card  border-0 p-4 shadow-sm">
         {generalError && (
           <div className="alert alert-danger d-flex align-items-center mb-4">
             <i className="bi bi-exclamation-triangle-fill me-2"></i>
@@ -132,7 +132,6 @@ export default function AddEvento() {
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
             <label htmlFor="nombre" className="form-label">
-              <i className="bi bi-calendar-event me-2"></i>
               Nombre del Evento
             </label>
             <input
@@ -148,7 +147,6 @@ export default function AddEvento() {
 
           <div className="mb-3">
             <label htmlFor="descripcion" className="form-label">
-              <i className="bi bi-text-paragraph me-2"></i>
               Descripción
             </label>
             <textarea
@@ -227,7 +225,7 @@ export default function AddEvento() {
               <i className="bi bi-x-circle me-2"></i>
               Cancelar
             </button>
-            <button type="submit" className="btn btn-success">
+            <button type="submit" className="btn btn-primary px-4">
               <i className="bi bi-check-circle me-2"></i>
               Crear Evento
             </button>
